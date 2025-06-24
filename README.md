@@ -4,6 +4,10 @@ Este repositorio contiene los códigos correspondientes al Proyecto de Fin de Gr
 
 **“Técnicas de clasificación automática de gestos manuales para sujetos intactos y con amputación transradial”**
 
+Estudiante: Manuel Molina.
+
+Tutores: Ariel E. Stassi, Renato Sosa Machado.
+
 ---
 
 ## Tabla de contenido
