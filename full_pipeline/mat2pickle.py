@@ -6,7 +6,7 @@ import os
 import pickle
 import matplotlib.pyplot as plt
 
-bd_to_use = "DB2"
+bd_to_use = "DB3"
 
 if bd_to_use == "DB2":
     """Para DB2"""
@@ -37,33 +37,20 @@ if bd_to_use == "DB2":
 
         # Concateno las señales EMG y las etiquetas
         emg_concat = np.concatenate([E1["emg"], E2["emg"], E3["emg"]])
-        label_concat = np.concatenate([E1["stimulus"], E2["stimulus"], E3["stimulus"]])
-        plt.figure()
-        plt.plot(E1["restimulus"])
-        plt.savefig("l1.png")
-        plt.figure()
-        plt.plot(E2["restimulus"])
-        plt.savefig("l2.png")
-        plt.figure()
-        plt.plot(E3["restimulus"])
-        plt.savefig("l3.png")
-        if i==1:
-            break
-    # Guardo todo en un diccionario
-    data[file] = {
-        'emg': emg_concat,
-        'label': label_concat,
-        'description': "Contiene datos de EMG concatenados de los ejercicios E1, E2 y E3 del sujeto."
-    }
-    
-    
-
+        label_concat = np.concatenate([E1["restimulus"], E2["restimulus"], E3["restimulus"]])
+        
+        # Guardo todo en un diccionario
+        data[file] = {
+            'emg': emg_concat,
+            'label': label_concat,
+            'description': "Contiene datos de EMG concatenados de los ejercicios E1, E2 y E3 del sujeto."
+        }
 
     # Guardo el archivo con los datos originales de todos los experimentos
     with open(nombre_archivo_salida, "wb") as f:
         pickle.dump(data, f)
 
-elif bd_to_use == "DB3":    # """Defino los datos de qué sujeto voy a usar"""
+elif bd_to_use == "DB3":    # Defino los datos de qué sujeto voy a usar
     """Para DB3"""
     # directorio de los datos
     data_dir = "data/DB3/"
@@ -79,48 +66,23 @@ elif bd_to_use == "DB3":    # """Defino los datos de qué sujeto voy a usar"""
     nombre_archivo_salida = "data_DB3_concatenado.pickle"
 
     # Lista
-    files = [nombre_folder + str(x) for x in range(1, nSubjects+1)]
+    files = [nombre_folder + str(x) for x in range(2, nSubjects+1)]
     data = dict()
 
     # Recorro los sujetos
+    
     for i, file in enumerate(files, start=1):
         # Cargo los tres experimentos
-        E1 = scipy.io.loadmat(f"{file}/S{i}_E1_A1.mat")
-        E2 = scipy.io.loadmat(f"{file}/S{i}_E2_A1.mat")
-        E3 = scipy.io.loadmat(f"{file}/S{i}_E3_A1.mat")
+        E1 = scipy.io.loadmat(f"{file}/S{i+1}_E1_A1.mat")
+        E2 = scipy.io.loadmat(f"{file}/S{i+1}_E2_A1.mat")
+        E3 = scipy.io.loadmat(f"{file}/S{i+1}_E3_A1.mat")
 
         # Concateno las señales EMG
         emg_concat = np.concatenate([E1["emg"], E2["emg"], E3["emg"]])
 
-        # Ajusto las etiquetas para que no se reinicien
-        l1 = E1["stimulus"]
-        l2 = E2["stimulus"]
-        l3 = E3["stimulus"]
-
-        # Aseguro que son 1D
-        l1 = l1.flatten()
-        l2 = l2.flatten()
-        l3 = l3.flatten()
-
-        # Calculo los máximos para continuar la numeración
-        max1 = l1.max()
-        l2[l2 > 0] += max1
-        max2 = l2.max()
-        l3[l3 > 0] += max2
-
         # Concateno todas las etiquetas
-        label_concat = np.concatenate([l1, l2, l3])
-        
-        # plt.figure()
-        # plt.plot(l1)
-        # plt.savefig("l1.png")
-        # plt.figure()
-        # plt.plot(l2)
-        # plt.savefig("l2.png")
-        # plt.figure()
-        # plt.plot(l3)
-        # plt.savefig("l3.png")
-        
+        label_concat = np.concatenate([E1["restimulus"], E2["restimulus"], E3["restimulus"]])
+
         # Guardo todo en un diccionario
         data[file] = {
             'emg': emg_concat,

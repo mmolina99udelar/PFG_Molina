@@ -10,30 +10,30 @@ import numpy as np
 # nombre de archivo de entrada
 nombre_archivo_datos = "data/DB3/data_DB3_concatenado.pickle"
 
-gestos_seleccionados = [0, 5, 6, 7, 9, 10, 13, 14]
+gestos_seleccionados = [0, 5, 6, 7, 9, 10, 13, 14, 22, 26, 31]
 
 
 """Levanto los datos y establezco la cantidad de muestras que voy a quitar de cada borde de cada repetición"""
 file = open(nombre_archivo_datos, 'rb')
-# file = open('MyoArmband_data_exp2_40_cor.pickle', 'rb')
 
 MyoArm_data = pickle.load(file)
 file.close()
 
-for x in MyoArm_data['DB3_s1']:    # miro los key del diccionario que tiene los datos
-    print(x) 
+for x in MyoArm_data:   # miro los key del diccionario que tiene los datos
+    print(x)
 # print(MyoArm_data.shape)
 
-MyoArm_data_s1 = MyoArm_data['DB3_s1']
-MyoArm_data_s1_label = MyoArm_data_s1['label']
+# MyoArm_data_s1 = MyoArm_data['DB2_s1']
+# MyoArm_data_s1_label
+# = MyoArm_data_s1['label']
 
-plt.figure()
-plt.plot(MyoArm_data_s1['label'])
-plt.savefig("label_s2.png")
-plt.show()
+# plt.figure()
+# plt.plot(MyoArm_data_s1_label)
+# plt.savefig("label_s1.png")
+# plt.show()
 
-etiquetas_unicas = np.unique(MyoArm_data_s1_label)
-print(etiquetas_unicas)
+# etiquetas_unicas = np.unique(MyoArm_data_s1_label)
+# print(etiquetas_unicas)
 
 # nOfSubjects = 40 # N° of Subjects [1,...,10]- cantidad de sujetos con lo que voy a trabajar
 # nChannels = 12 # N° of Channels- numero de canales con los que quiero trabajar- el maximo es MyoArm_data['S1']['emg'].shape[1]+1
