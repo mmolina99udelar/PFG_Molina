@@ -66,16 +66,16 @@ elif bd_to_use == "DB3":    # Defino los datos de qué sujeto voy a usar
     nombre_archivo_salida = "data_DB3_concatenado.pickle"
 
     # Lista
-    files = [nombre_folder + str(x) for x in range(2, nSubjects+1)]
+    files = [nombre_folder + str(x) for x in range(1, nSubjects+1)]
     data = dict()
 
     # Recorro los sujetos
     
     for i, file in enumerate(files, start=1):
         # Cargo los tres experimentos
-        E1 = scipy.io.loadmat(f"{file}/S{i+1}_E1_A1.mat")
-        E2 = scipy.io.loadmat(f"{file}/S{i+1}_E2_A1.mat")
-        E3 = scipy.io.loadmat(f"{file}/S{i+1}_E3_A1.mat")
+        E1 = scipy.io.loadmat(f"{file}/S{i}_E1_A1.mat")
+        E2 = scipy.io.loadmat(f"{file}/S{i}_E2_A1.mat")
+        E3 = scipy.io.loadmat(f"{file}/S{i}_E3_A1.mat")
 
         # Concateno las señales EMG
         emg_concat = np.concatenate([E1["emg"], E2["emg"], E3["emg"]])

@@ -6,34 +6,67 @@ import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 
-"""Entradas"""
-# nombre de archivo de entrada
-nombre_archivo_datos = "data/DB3/data_DB3_concatenado.pickle"
+bd_to_use = "DB2"
 
 gestos_seleccionados = [0, 5, 6, 7, 9, 10, 13, 14, 22, 26, 31]
 
+if bd_to_use == "DB2":
+    """Entradas"""
+    # nombre de archivo de entrada
+    nombre_archivo_datos = "data/DB2/data_DB2_concatenado.pickle"
+    
+    nombre_archivo_salida = "data/DB2/DB2_gestos_seleccionados.pickle"
+    
+if bd_to_use == "DB3":
+    """Entradas"""
+    # nombre de archivo de entrada
+    nombre_archivo_datos = "data/DB3/data_DB3_concatenado.pickle"
+    
+    nombre_archivo_salida = "data/DB3/DB3_gestos_seleccionados.pickle"
 
-"""Levanto los datos y establezco la cantidad de muestras que voy a quitar de cada borde de cada repetición"""
+# Levanto los datos
 file = open(nombre_archivo_datos, 'rb')
 
 MyoArm_data = pickle.load(file)
 file.close()
 
-for x in MyoArm_data:   # miro los key del diccionario que tiene los datos
-    print(x)
-# print(MyoArm_data.shape)
+for x in MyoArm_data:   # recorro los sujetos
+    label_sujeto = MyoArm_data[x]['label'].copy()
+    emg_sujeto = MyoArm_data[x]['emg'].copy()
+    indices = np.where(np.isin(label_sujeto, gestos_seleccionados))[0]
+    MyoArm_data[x]['label'] = label_sujeto[indices]
+    MyoArm_data[x]['emg'] = emg_sujeto[indices]
+    
+with open(nombre_archivo_salida, "wb") as f:
+    pickle.dump(MyoArm_data, f)
+    
+    
+    
+# """Visualizar cantidad de gestos por sujeto"""
+    # cantidad_gestos = []
+    # for x in MyoArm_data:   # miro los key del diccionario que tiene los datos
+    #     print(x)
+    #     etiquetas_unicas = np.unique(MyoArm_data[x]['label'])
+    #     cantidad_gestos.append(len(etiquetas_unicas))
+    #     print(etiquetas_unicas)
+    
+    
+    # """Visualizar cantidad de gestos por sujeto"""
+    # cantidad_gestos = []
+    # for x in MyoArm_data:   # miro los key del diccionario que tiene los datos
+    #     print(x)
+    #     etiquetas_unicas = np.unique(MyoArm_data[x]['label'])
+    #     cantidad_gestos.append(len(etiquetas_unicas))
+    #     print(etiquetas_unicas)
+    
+    
+        
+    # plt.figure()
+    # plt.plot(np.arange(1, len(cantidad_gestos)+1), np.array(cantidad_gestos), '-*')
+    # plt.xlabel('Sujeto')
+    # plt.ylabel('Cantidad de gestos')
+    # plt.savefig("cantidad_gestos.png")
 
-# MyoArm_data_s1 = MyoArm_data['DB2_s1']
-# MyoArm_data_s1_label
-# = MyoArm_data_s1['label']
-
-# plt.figure()
-# plt.plot(MyoArm_data_s1_label)
-# plt.savefig("label_s1.png")
-# plt.show()
-
-# etiquetas_unicas = np.unique(MyoArm_data_s1_label)
-# print(etiquetas_unicas)
 
 # nOfSubjects = 40 # N° of Subjects [1,...,10]- cantidad de sujetos con lo que voy a trabajar
 # nChannels = 12 # N° of Channels- numero de canales con los que quiero trabajar- el maximo es MyoArm_data['S1']['emg'].shape[1]+1
