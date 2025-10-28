@@ -6,7 +6,7 @@ import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 
-bd_to_use = "DB2"
+bd_to_use = "DB3"
 
 gestos_seleccionados = [0, 5, 6, 7, 9, 10, 13, 14, 22, 26, 31]
 
@@ -31,9 +31,14 @@ MyoArm_data = pickle.load(file)
 file.close()
 
 for x in MyoArm_data:   # recorro los sujetos
+    print(x)
     label_sujeto = MyoArm_data[x]['label'].copy()
     emg_sujeto = MyoArm_data[x]['emg'].copy()
     indices = np.where(np.isin(label_sujeto, gestos_seleccionados))[0]
+    print("largo indices: " + str(len(indices)))
+    print("largo emg sujeto: " + str(len(emg_sujeto)))
+    print("largo label sujeto: " + str(len(label_sujeto)))
+    
     MyoArm_data[x]['label'] = label_sujeto[indices]
     MyoArm_data[x]['emg'] = emg_sujeto[indices]
     

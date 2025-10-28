@@ -38,7 +38,15 @@ if bd_to_use == "DB2":
         # Concateno las señales EMG y las etiquetas
         emg_concat = np.concatenate([E1["emg"], E2["emg"], E3["emg"]])
         label_concat = np.concatenate([E1["restimulus"], E2["restimulus"], E3["restimulus"]])
-        
+        # Comprobar y ajustar longitudes
+        len_emg = emg_concat.shape[0]
+        len_label = label_concat.shape[0]
+
+        if len_emg != len_label:
+            min_len = min(len_emg, len_label)
+            emg_concat = emg_concat[:min_len]
+            label_concat = label_concat[:min_len]
+            
         # Guardo todo en un diccionario
         data[file] = {
             'emg': emg_concat,
@@ -82,7 +90,16 @@ elif bd_to_use == "DB3":    # Defino los datos de qué sujeto voy a usar
 
         # Concateno todas las etiquetas
         label_concat = np.concatenate([E1["restimulus"], E2["restimulus"], E3["restimulus"]])
+        
+        # Compruebo y ajusto longitudes
+        len_emg = emg_concat.shape[0]
+        len_label = label_concat.shape[0]
 
+        if len_emg != len_label:
+            min_len = min(len_emg, len_label)
+            emg_concat = emg_concat[:min_len]
+            label_concat = label_concat[:min_len]
+            
         # Guardo todo en un diccionario
         data[file] = {
             'emg': emg_concat,
