@@ -9,6 +9,7 @@ import os
 
 # Configuración
 bd_to_use = "DB2"
+factor_submuestreo = 10
 
 # selecciono archivo de datos
 if bd_to_use == "DB2":
@@ -30,8 +31,8 @@ with open(nombre_archivo_datos, 'rb') as file:
 
 # submuestreo
 for sujeto, datos in MyoArm_data.items():
-    MyoArm_data[sujeto]['label'] = MyoArm_data[sujeto]['label'][::10]
-    MyoArm_data[sujeto]['emg'] = MyoArm_data[sujeto]['emg'][::10]
+    MyoArm_data[sujeto]['label'] = MyoArm_data[sujeto]['label'][::factor_submuestreo]
+    MyoArm_data[sujeto]['emg'] = MyoArm_data[sujeto]['emg'][::factor_submuestreo]
     
 with open(nombre_archivo_salida, "wb") as f:
     pickle.dump(MyoArm_data, f)
